@@ -25,9 +25,10 @@ class CategoriesController < ApplicationController
   # POST /categories.json
   def create
     @category = Category.new(category_params)
-
+  
     respond_to do |format|
       if @category.save
+        UserMailer.with(user: @user).welcome_email.deliver_later
         format.html { redirect_to @category, notice: 'Category was successfully created.' }
         format.json { render :show, status: :created, location: @category }
       else
